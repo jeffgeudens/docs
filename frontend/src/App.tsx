@@ -49,7 +49,7 @@ function App() {
         type="text"
         value={cupcakeRecipient}
         onChange={(e) => setCupcakeRecipient(e.target.value)}
-        placeholder="Enter valid ethereum address to send cupcake to"
+        placeholder="Enter valid MetaMask address to send cupcake to"
       />
       <button
         disabled={!write || !isAddress(cupcakeRecipient)}
