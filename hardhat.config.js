@@ -20,5 +20,9 @@ module.exports = {
       url: "https://arb1.arbitrum.io/rpc",
       //accounts: [ARBITRUM_MAINNET_TEMPORARY_PRIVATE_KEY]
     },
+    botanixTestnet: {
+      url: "https://node.botanixlabs.dev",
+      accounts: [process.env.BOTANIX_TESTNET_PRIVATE_KEY],
+    },
   },
 };
