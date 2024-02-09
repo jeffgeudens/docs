@@ -2,18 +2,24 @@
 import React, { useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import VendingMachine from "./VendingMachine.sol/VendingMachine.json";
-import { useContractRead, useAccount, useContractWrite } from "wagmi";
+import {
+  useContractRead,
+  useAccount,
+  useContractWrite,
+  usePrepareContractWrite,
+} from "wagmi";
 import { isAddress, formatUnits } from "viem";
 import "./App.css";
 
-const contractAddress = "0x83D8d2062c16304e197416eEB807da8710935Ebe";
-
-const contract = {
-  address: contractAddress,
-  abi: VendingMachine.abi,
-};
+// const contractAddress = "0x83D8d2062c16304e197416eEB807da8710935Ebe";
 
 function App() {
+  const [cupcakeRecipient, setCupcakeRecipient] = useState("");
+  const [contractAddress, setContractAddress] = useState(null);
+  const contract = {
+    address: contractAddress,
+    abi: VendingMachine.abi,
+  };
   const { address, isConnecting, isDisconnected } = useAccount();
   const {
     data: cupcakeBalance,
@@ -25,11 +31,12 @@ function App() {
     args: [address],
     watch: true,
   });
-  const { data, isSuccess, write } = useContractWrite({
+  const { config, error } = usePrepareContractWrite({
     ...contract,
     functionName: "giveCupcakeTo",
+    args: [cupcakeRecipient],
   });
-  const [cupcakeRecipient, setCupcakeRecipient] = useState("");
+  const { write } = useContractWrite(config);
 
   console.log("recipientAddress: ", cupcakeBalance);
 
@@ -51,16 +58,21 @@ function App() {
         onChange={(e) => setCupcakeRecipient(e.target.value)}
         placeholder="Enter valid MetaMask address to send cupcake to"
       />
+      <input
+        type="text"
+        value={contractAddress}
+        onChange={(e) => setContractAddress(e.target.value)}
+        placeholder="Enter contract address"
+      />
       <button
-        disabled={!write || !isAddress(cupcakeRecipient)}
-        onClick={() =>
-          write({
-            args: [cupcakeRecipient],
-          })
+        disabled={
+          !write || !isAddress(cupcakeRecipient) || !isAddress(contractAddress)
         }
+        onClick={() => write?.()}
       >
         Cupcake Please!
       </button>
+      {isError && <div>Error: {error.message}</div>}
       <div>
         Cupcake Balance:{" "}
         {cupcakeBalance ? formatUnits(cupcakeBalance, "0") : "0"} ({address})

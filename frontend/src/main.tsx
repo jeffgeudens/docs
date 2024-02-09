@@ -7,7 +7,7 @@ import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
-import { hardhat, arbitrumSepolia } from "wagmi/chains";
+import { hardhat } from "wagmi/chains";
 import { Chain } from "wagmi";
 
 export const botanix = {
