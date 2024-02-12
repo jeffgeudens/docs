@@ -56,7 +56,7 @@ function App() {
         type="text"
         value={cupcakeRecipient}
         onChange={(e) => setCupcakeRecipient(e.target.value)}
-        placeholder="Enter valid MetaMask address to send cupcake to"
+        placeholder="Enter address to send cupcake to"
       />
       <input
         type="text"
